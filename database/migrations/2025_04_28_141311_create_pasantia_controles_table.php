@@ -13,7 +13,7 @@ return new class extends Migration
             $table->foreignId('pasantia_id')->constrained()->onDelete('cascade');
             $table->date('fecha_firma')->nullable();
             $table->string('observaciones', 100)->nullable();
-            $table->string('fecha_archivo', 45)->nullable();
+            $table->date('fecha_archivo', 45)->nullable();
             $table->foreignId('acta_copia_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

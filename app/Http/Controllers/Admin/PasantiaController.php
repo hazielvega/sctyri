@@ -15,7 +15,7 @@ class PasantiaController extends Controller
 {
     public function index(): Response
     {
-        return Inertia::render('Admin/Pasantias/Index', [
+        return Inertia::render('admin/pasantias/Index', [
             'filters' => Request::all('search', 'estado'),
             'pasantias' => Pasantia::query()
                 ->orderBy('fecha_inicio')

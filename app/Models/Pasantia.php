@@ -15,6 +15,11 @@ class Pasantia extends Model
         'docente_id', 'convenio_id'
     ];
 
+    public function scopeFechaInicioBeforeFechaFin($query)
+    {
+        return $query->where('fecha_inicio', '<', 'fecha_fin');
+    }
+
     public function alumnoCarrera()
     {
         return $this->belongsTo(AlumnoCarrera::class, 'alumno_carreras_id');

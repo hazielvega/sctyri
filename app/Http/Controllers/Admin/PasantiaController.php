@@ -2,26 +2,23 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Pasantia;
-use App\Http\Requests\PasantiaStoreRequest;
-use App\Http\Requests\PasantiaUpdateRequest;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class PasantiaController extends Controller
 {
-    public function index(): Response
+    public function index(Request $request): Response
     {
         return Inertia::render('admin/pasantias/Index', [
-            'filters' => Request::all('search', 'estado'),
+            'filters' => $request->only('search', 'estado'),
             'pasantias' => Pasantia::query()
                 ->orderBy('fecha_inicio')
-                ->filter(Request::only('search', 'estado'))
+                ->filter($request->only('search', 'estado'))
                 ->paginate()
-                ->appends(Request::all())
+                ->appends($request->all())
         ]);
     }
 

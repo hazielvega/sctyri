@@ -1,66 +1,51 @@
-import { Link, usePage } from '@inertiajs/react';
-import MainLayout from '@/Layouts/MainLayout';
-import FilterBar from '@/Components/FilterBar/FilterBar';
-import Pagination from '@/Components/Pagination/Pagination';
-import { Organization, PaginatedData } from '@/types';
-import Table from '@/Components/Table/Table';
-import { Trash2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { useForm } from '@inertiajs/react';
+import DataTable from '@/components/ui/datatable';
+import { Pasantia } from '@/types/pasantia';
+import AppLayout from '@/layouts/app-layout';
+import { Head } from '@inertiajs/react';
 
-function Index() {
-  const { organizations } = usePage<{
-    organizations: PaginatedData<Organization>;
-  }>().props;
+const Index: React.FC<{ pasantias: Pasantia[] }> = ({ pasantias }) => {
+  const { post, put } = useForm();
+  const [currentItemId, setCurrentItemId] = useState<number | null>(null);
 
-  const {
-    data,
-    meta: { links }
-  } = organizations;
+  const handleSubmit = (values: Pasantia, closeModal: () => void) => {
+    const method = values.id ? put : post;
+    const url = values.id ? `/admin/pasantias/${values.id}` : '/admin/pasantias';
+
+    method(url, {
+      ...values,
+      onSuccess: () => {
+        closeModal();
+        setCurrentItemId(null);
+      },
+      onError: (errors) => {
+        console.error('Submission errors:', errors);
+      },
+    });
+  };
+
+  const headers = [
+    { key: 'fecha_acta', label: 'Fecha Acta' },
+    { key: 'fecha_inicio', label: 'Inicio' },
+    { key: 'duracion', label: 'Duración' },
+    { key: 'estado', label: 'Estado' },
+    { key: 'monto', label: 'Monto' },
+  ];
 
   return (
-    <div>
-      <h1 className="mb-8 text-3xl font-bold">Organizations</h1>
-      <div className="flex items-center justify-between mb-6">
-        <FilterBar />
-        <Link
-          className="btn-indigo focus:outline-none"
-          href={route('organizations.create')}
-        >
-          <span>Create</span>
-          <span className="hidden md:inline"> Organization</span>
-        </Link>
+    <AppLayout breadcrumbs={[{ title: 'Dashboard', href: '/admin' }, { title: 'Pasantías', href: '/admin/pasantias' }]}>
+      <Head title="Pasantías" />
+      <div className="p-6">
+        <h1 className="text-2xl font-bold mb-4">Pasantías</h1>
+        <DataTable
+          data={pasantias}
+          headers={headers}
+          onEdit={(id) => setCurrentItemId(id)}
+        />
       </div>
-      <Table
-        columns={[
-          {
-            label: 'Name',
-            name: 'name',
-            renderCell: row => (
-              <>
-                {row.name}
-                {row.deleted_at && (
-                  <Trash2 size={16} className="ml-2 text-gray-400" />
-                )}
-              </>
-            )
-          },
-          { label: 'City', name: 'city' },
-          { label: 'Phone', name: 'phone', colSpan: 2 }
-        ]}
-        rows={data}
-        getRowDetailsUrl={row => route('organizations.edit', row.id)}
-      />
-      <Pagination links={links} />
-    </div>
+    </AppLayout>
   );
-}
-
-/**
- * Persistent Layout (Inertia.js)
- *
- * [Learn more](https://inertiajs.com/pages#persistent-layouts)
- */
-Index.layout = (page: React.ReactNode) => (
-  <MainLayout title="Pasantias" children={page} />
-);
+};
 
 export default Index;

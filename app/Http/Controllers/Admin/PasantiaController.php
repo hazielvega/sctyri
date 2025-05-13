@@ -27,7 +27,7 @@ class PasantiaController extends Controller
         return Inertia::render('Admin/Pasantias/Create');
     }
 
-    public function store(PasantiaStoreRequest $request): RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
         Pasantia::create(
             $request->validated()
@@ -36,7 +36,7 @@ class PasantiaController extends Controller
         return Redirect::route('pasantias.index')->with('success', 'Pasantía creada exitosamente.');
     }
 
-    public function update(Pasantia $pasantia, PasantiaUpdateRequest $request): RedirectResponse
+    public function update(Pasantia $pasantia, Request $request): RedirectResponse
     {
         $pasantia->update(
             $request->validated()

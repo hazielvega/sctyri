@@ -199,7 +199,7 @@ export default function ConvenioTiposIndex({ convenioTipos }: {
                                                             Confirmar eliminación
                                                         </AlertDialogTitle>
                                                         <AlertDialogDescription>
-                                                            ¿Estás seguro de que deseas eliminar el tipo de convenio "{tipo.nombre}"?
+                                                            ¿Estás seguro de que deseas eliminar el tipo de convenio?
                                                             Esta acción no se puede deshacer.
                                                         </AlertDialogDescription>
                                                     </AlertDialogHeader>

@@ -96,11 +96,11 @@ function Index() {
                 </CardContent>
             </Card>
 
-            {/* {docentes.meta.links.length > 3 && (
+            {docentes.meta.links.length > 3 && (
                 <div className="mt-4">
                     <Pagination links={docentes.meta.links} />
                 </div>
-            )} */}
+            )}
         </div>
     );
 }

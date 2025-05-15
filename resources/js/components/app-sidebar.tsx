@@ -13,6 +13,11 @@ const mainNavItems: NavItem[] = [
         href: '/admin',
         icon: LayoutGrid,
     },
+    {
+        title: 'Convenios',
+        href: '/admin/convenio-tipos',
+        icon: Folder,
+    },
 ];
 
 const footerNavItems: NavItem[] = [

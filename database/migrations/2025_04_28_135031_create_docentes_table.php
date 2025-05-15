@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('docentes', function (Blueprint $table) {
             $table->id();
             $table->string('nombre', 45)->nullable();
+            $table->string('apellido', 45)->nullable();
             $table->string('rol', 45)->nullable();
             $table->timestamps();
         });

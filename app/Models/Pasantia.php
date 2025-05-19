@@ -15,6 +15,28 @@ class Pasantia extends Model
         'docente_id', 'convenio_id'
     ];
 
+    public function scopeFechaInicioBeforeFechaFin($query)
+    {
+        return $query->where('fecha_inicio', '<', 'fecha_fin');
+    }
+
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['search'] ?? null, function ($query, $search) {
+            $query->where(function ($query) use ($search) {
+                $query->where('fecha_acta', 'like', '%'.$search.'%')
+                    ->orWhere('fecha_inicio', 'like', '%'.$search.'%')
+                    ->orWhere('fecha_fin', 'like', '%'.$search.'%')
+                    ->orWhere('estado', 'like', '%'.$search.'%')
+                    ->orWhere('monto', 'like', '%'.$search.'%')
+                    ->orWhere('domicilio', 'like', '%'.$search.'%')
+                    ->orWhere('tareas', 'like', '%'.$search.'%');
+            });
+        })->when($filters['estado'] ?? null, function ($query, $estado) {
+            $query->where('estado', $estado);
+        });
+    }
+
     public function alumnoCarrera()
     {
         return $this->belongsTo(AlumnoCarrera::class, 'alumno_carreras_id');

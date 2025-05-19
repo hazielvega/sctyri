@@ -16,6 +16,11 @@ class PasantiaControl extends Model
         'fecha_archivo', 'acta_copia_id'
     ];
 
+    public function scopeFechaFirmaBeforeFechaArchivo($query)
+    {
+        return $query->where('fecha_firma', '<', 'fecha_archivo');
+    }
+
     public function pasantia()
     {
         return $this->belongsTo(Pasantia::class);

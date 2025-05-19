@@ -18,6 +18,11 @@ class PasantiaPago extends Model
         'fecha_deposito', 'observaciones'
     ];
 
+    public function scopeIncioPeriodoBeforeFechaDeposit($query)
+    {
+        return $query->where('incio_periodo', '<', 'fecha_deposito');
+    }
+
     public function pasantia()
     {
         return $this->belongsTo(Pasantia::class, 'pasantias_id_pasantia');

@@ -26,8 +26,6 @@ Route::resource('convenio-tipos', ConvenioTipoController::class)
 
 Route::get('convenio-tipos/check-nombre', [ConvenioTipoController::class, 'checkNombre'])->name('convenio-tipos.check-nombre');
 
-
-
 Route::resource('/pasantias', PasantiaController::class)
     ->names([
         'index' => 'pasantias.index',
@@ -51,3 +49,5 @@ Route::resource('/docentes', DocenteController::class)
         'destroy' => 'docentes.destroy'
     ])
     ->middleware('auth');
+
+Route::get('/admin/docentes/list', [DocenteController::class, 'getDocentes']);

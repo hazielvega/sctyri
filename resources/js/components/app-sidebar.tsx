@@ -18,6 +18,16 @@ const mainNavItems: NavItem[] = [
         href: '/admin/convenio-tipos',
         icon: Folder,
     },
+    {
+        title: 'Docentes',
+        href: '/admin/docentes',
+        icon: Folder,
+    },
+    {
+        title: 'Pasantias',
+        href: '/admin/pasantias',
+        icon: Folder,
+    },
 ];
 
 const footerNavItems: NavItem[] = [

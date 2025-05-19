@@ -10,7 +10,7 @@ class Docente extends Model
     use HasFactory;
 
     protected $fillable = [
-        'nombre', 'rol'
+        'nombre','apellido','rol'
     ];
 
     public function pasantias()

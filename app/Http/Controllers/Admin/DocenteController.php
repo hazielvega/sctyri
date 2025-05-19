@@ -13,10 +13,10 @@ class DocenteController extends Controller
     public function index(Request $request): Response
     {
         return Inertia::render('admin/docentes/Index', [
-            'filters' => $request->only('search', 'nombre'),
+            'filters' => $request->only('search', 'nombre', 'apellido'),
             'docentes' => Docente::query()
-                ->orderBy('nombre')
-                ->paginate()
+                ->orderBy('apellido')
+                ->paginate(1)
                 ->withQueryString()  // Mantiene los parámetros de búsqueda en la paginación
         ]);
     }
@@ -36,6 +36,7 @@ class DocenteController extends Controller
         try {
             $validated = $request->validate([
                 'nombre'=> 'required|string|max:45|min:2',
+                'apellido'=> 'required|string|max:45|min:2',
                 'rol' => 'required|string|max:45|min:2',
             ]);
     
@@ -54,22 +55,51 @@ class DocenteController extends Controller
         ]);
     }
 
-    public function update(Docente $docente, Request $request): RedirectResponse
+    public function update(Request $request, Docente $docente)
     {
         $validated = $request->validate([
-            'nombre'=> 'required|string|max:45|min:2',
-            'rol' => 'required|string|max:45|min:2',
+            'nombre' => [
+                'required',
+                'string',
+                'unique:docentes,nombre,' . $docente->id
+            ],
+            'apellido' => [
+                'required',
+                'string',
+                'unique:docentes,apellido,' . $docente->id
+            ],
+            'rol' => [
+                'required',
+                'string',
+                'unique:docentes,rol,' . $docente->id
+            ],
         ]);
 
-        $docente->update($validated);
-
-        return Redirect::back()->with('success', 'Docente actualizada.');
+        try {
+            $docente->update($validated);
+            return redirect()->route('admin.docentes.index')
+                ->with('success', 'Docente actualizado exitosamente');
+        } catch (\Exception $e) {
+            return back()
+                ->with('error', 'No se pudo actualizar el docente: ' . $e->getMessage());
+        }
     }
 
-    public function destroy(Docente $docente): RedirectResponse
+    public function destroy(Docente $docente)
     {
-        $docente->delete();
+        try {
+            $docente->delete();
+            return redirect()->route('admin.docentes.index')
+                ->with('success', 'Docente eliminado exitosamente');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.docentes.index')
+                ->with('error', 'No se pudo eliminar el docente: ' . $e->getMessage());
+        }
+    }
 
-        return Redirect::back()->with('success', 'Docente eliminada.');
+    public function getDocentes() {
+        return Docente::select('id', 'nombre', 'apellido', 'rol')
+            ->orderBy('apellido')
+            ->get();
     }
 }

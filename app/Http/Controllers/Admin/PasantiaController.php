@@ -12,7 +12,7 @@ class PasantiaController extends Controller
 {
     public function index(Request $request): Response
     {
-        return Inertia::render('admin/pasantias/Index', [
+        return Inertia::render('admin/pasantias/IndexPrueba', [
             'filters' => $request->only('search', 'estado'),
             'pasantias' => Pasantia::query()
                 ->orderBy('fecha_inicio')

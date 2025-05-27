@@ -26,19 +26,50 @@ Route::resource('convenio-tipos', ConvenioTipoController::class)
 
 Route::get('convenio-tipos/check-nombre', [ConvenioTipoController::class, 'checkNombre'])->name('convenio-tipos.check-nombre');
 
-Route::resource('/pasantias', PasantiaController::class)
-    ->names([
-        'index' => 'pasantias.index',
-        'create' => 'pasantias.create',
-        'store' => 'pasantias.store',
-        'show' => 'pasantias.show',
-        'edit' => 'pasantias.edit',
-        'update' => 'pasantias.update',
-        'destroy' => 'pasantias.destroy'
-    ])
-    ->middleware('auth');
+// Route::resource('/pasantias', PasantiaController::class)
+//     ->names([
+//         'index' => 'pasantias.index',
+//         'create' => 'pasantias.create',
+//         'store' => 'pasantias.store',
+//         'show' => 'pasantias.show',
+//         'edit' => 'pasantias.edit',
+//         'update' => 'pasantias.update',
+//         'destroy' => 'pasantias.destroy'
+//     ])
+//     ->middleware('auth');
 
-Route::resource('/docentes', DocenteController::class)
+// Route::resource('/docentes', DocenteController::class)
+//     ->names([
+//         'index' => 'docentes.index',
+//         'create' => 'docentes.create',
+//         'store' => 'docentes.store',
+//         'show' => 'docentes.show',
+//         'edit' => 'docentes.edit',
+//         'update' => 'docentes.update',
+//         'destroy' => 'docentes.destroy'
+//     ])
+//     ->middleware('auth');
+
+// Route::get('/admin/docentes/list', [DocenteController::class, 'getDocentes']);
+
+
+
+//Rutas para pasantías
+Route::middleware('auth')->group(function () {
+    Route::redirect('pasantias', 'pasantias.index');
+
+    Route::resource('/pasantias', PasantiaController::class)
+        ->names([
+            'index' => 'pasantias.index',
+            'create' => 'pasantias.create',
+            'store' => 'pasantias.store',
+            'show' => 'pasantias.show',
+            'edit' => 'pasantias.edit',
+            'update' => 'pasantias.update',
+            'destroy' => 'pasantias.destroy'
+        ]);
+
+    Route::resource('/pasantias/docentes', DocenteController::class)
     ->names([
         'index' => 'docentes.index',
         'create' => 'docentes.create',
@@ -47,7 +78,21 @@ Route::resource('/docentes', DocenteController::class)
         'edit' => 'docentes.edit',
         'update' => 'docentes.update',
         'destroy' => 'docentes.destroy'
-    ])
-    ->middleware('auth');
+    ]);
 
-Route::get('/admin/docentes/list', [DocenteController::class, 'getDocentes']);
+    Route::get('/pasantias/docentes/list', [DocenteController::class, 'getDocentes']);
+});
+// Route::middleware('auth')->group(function () {
+//     Route::redirect('settings', 'settings/profile');
+
+//     Route::get('settings/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+//     Route::patch('settings/profile', [ProfileController::class, 'update'])->name('profile.update');
+//     Route::delete('settings/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+//     Route::get('settings/password', [PasswordController::class, 'edit'])->name('password.edit');
+//     Route::put('settings/password', [PasswordController::class, 'update'])->name('password.update');
+
+//     Route::get('settings/appearance', function () {
+//         return Inertia::render('settings/appearance');
+//     })->name('appearance');
+// });

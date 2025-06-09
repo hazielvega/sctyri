@@ -12,19 +12,19 @@ class PasantiaController extends Controller
 {
     public function index(Request $request): Response
     {
-        return Inertia::render('admin/pasantias/IndexPrueba', [
+        return Inertia::render('admin/pasantias/Index', [
             'filters' => $request->only('search', 'estado'),
             'pasantias' => Pasantia::query()
                 ->orderBy('fecha_inicio')
                 ->filter($request->only('search', 'estado'))
-                ->paginate()
+                ->paginate(10)
                 ->appends($request->all())
         ]);
     }
 
     public function create(): Response
     {
-        return Inertia::render('Admin/Pasantias/Create');
+        return Inertia::render('admin/Pasantias/Create');
     }
 
     public function store(Request $request) 

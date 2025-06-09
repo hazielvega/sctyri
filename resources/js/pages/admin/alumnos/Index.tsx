@@ -5,10 +5,10 @@ import { useForm } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/modal';
 import { PlusCircleIcon } from 'lucide-react';
-import { usePage } from '@inertiajs/react';
+import { usePage, Link } from '@inertiajs/react';
 import { type PageProps } from '@/types';
-import { Head } from '@inertiajs/react';
-import { DocenteForm } from '@/components/forms/docente-form';
+import { Head, router } from '@inertiajs/react';
+import { AlumnoForm } from '@/components/forms/alumno-form';
 import { DataTable } from '@/components/ui/data-table';
 import { CustomPagination } from '@/components/ui/custom-pagination';
 import { SuccessAlert } from '@/components/ui/custom-alert';
@@ -20,30 +20,30 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '/admin',
     },
     {
-        title: 'Docentes',
-        href: '/admin/docentes',
+        title: 'Alumnos',
+        href: '/admin/alumnos',
     },
 ];
 
-export default function DocentesIndex({ docentes }: {
-    docentes: {
-        data: Array<{ id: number, nombre: string , apellido: string, rol: string}>,
+export default function AlumnosIndex({ alumnos }: {
+    alumnos: {
+        data: Array<{ id: number, nombre: string , apellido: string, dni: string}>,
         links: Array<{ url: string | null, label: string, active: boolean }>,
     }
     }) {
     const [isCreateDialogOpen, setIsCreateDialogOpen] = React.useState(false);
     const { data, setData, post, processing, errors, reset } = useForm({
-        nombre: "", apellido: "", rol: ""
+        nombre: "", apellido: "", dni: ""
     });
 
-    const { links } = docentes;
+    const { links } = alumnos;
     const { props } = usePage<PageProps>();
     const { flash } = props;
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <PasantiasLayout>
-                <Head title="Convenios" />
+                <Head title="Alumnos" />
                 <div className="space-y-6 p-6">
                     {/* Alertas de éxito */}
                     {flash?.success && (
@@ -54,28 +54,28 @@ export default function DocentesIndex({ docentes }: {
                     <div className="flex items-center justify-between">
                         <div>
                             <h1 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                                Docentes
+                                Alumnos
                             </h1>
                             <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                                Administra los docentes registrados
+                                Administra los alumnos registrados
                             </p>
                         </div>
 
                         <Modal
                             open={isCreateDialogOpen}
                             onOpenChange={setIsCreateDialogOpen}
-                            title="Crear Docente"
+                            title="Crear Alumnos"
                             trigger={
                                 <Button className="gap-2">
                                 <PlusCircleIcon className="h-4 w-4" />
-                                Nuevo Docente
+                                Nuevo Alumno
                                 </Button>
                             }
                             showCancelButton={false} // Ocultamos el Cancelar del Modal
                             >
-                            <DocenteForm
-                                initialData={{ nombre: "", apellido: "", rol: "" }}
-                                onSubmitRoute="/admin/docentes"
+                            <AlumnoForm
+                                initialData={{ nombre: "", apellido: "", dni: "" }}
+                                onSubmitRoute="/admin/alumnos"
                                 onSuccess={() => setIsCreateDialogOpen(false)}
                                 processing={processing}
                                 errors={errors}
@@ -91,9 +91,9 @@ export default function DocentesIndex({ docentes }: {
                                 { key: "apellido", header: "Apellido", width: "80%" },
                                 { key: "rol", header: "Rol", width: "80%" },
                             ]}
-                            data={docentes.data}
+                            data={alumnos.data}
                             emptyState={{
-                                title: "No hay docentes registrados",
+                                title: "No hay alumnos registrados",
                                 description: "Comienza agregando un nuevo docente.",
                                 icon: (
                                 <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -101,12 +101,12 @@ export default function DocentesIndex({ docentes }: {
                                 </svg>
                                 ),
                             }}
-                            onEdit={(docente) => console.log("Editar docente", docente)}
-                            onDelete={(id) => console.log("Eliminar docente", id)}
-                            editForm={(docente, onSuccess) => (
-                                <DocenteForm
-                                    initialData={docente}
-                                    onSubmitRoute={`/admin/docentes/${docente.id}`}
+                            onEdit={(alumno) => console.log("Editar alumno", alumno)}
+                            onDelete={(id) => console.log("Eliminar alumno", id)}
+                            editForm={(alumno, onSuccess) => (
+                                <AlumnoForm
+                                    initialData={alumno}
+                                    onSubmitRoute={`/admin/docentes/${alumno.id}`}
                                     onSuccess={onSuccess}  // Usar el onSuccess proporcionado por DataTable
                                     processing={processing}
                                     errors={errors}
@@ -114,7 +114,7 @@ export default function DocentesIndex({ docentes }: {
                             )}
                             deleteDialog={{
                                 title: "Confirmar eliminación",
-                                description: (docente) => `¿Estás seguro de que deseas eliminar "${docente.nombre} ${docente.apellido}"? Esta acción no se puede deshacer.`,
+                                description: (alumno) => `¿Estás seguro de que deseas eliminar "${alumno.nombre} ${alumno.apellido}"? Esta acción no se puede deshacer.`,
                                 confirmButtonText: "Eliminar"
                             }}
                             processing={processing}

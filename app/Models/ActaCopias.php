@@ -12,7 +12,7 @@ class ActaCopias extends Model
     protected $table = 'acta_copias';
 
     protected $fillable = [
-        'pase_numero', 'fecha_pase', 'tramite', 'dirigido_a'
+        'pase_numero', 'fecha_pase', 'numero_tramite', 'dirigido_a'
     ];
 
     public function controlesPasantia()

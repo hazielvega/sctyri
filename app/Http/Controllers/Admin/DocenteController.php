@@ -16,7 +16,7 @@ class DocenteController extends Controller
             'filters' => $request->only('search', 'nombre', 'apellido'),
             'docentes' => Docente::query()
                 ->orderBy('apellido')
-                ->paginate(1)
+                ->paginate(10)
                 ->withQueryString()  // Mantiene los parámetros de búsqueda en la paginación
         ]);
     }
@@ -24,11 +24,6 @@ class DocenteController extends Controller
     public function create(): Response
     {
         return Inertia::render('admin/docentes/Create');
-    }
-
-    public function show(Docente $docente): Response
-    {
-        
     }
 
     public function store(Request $request)

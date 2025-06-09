@@ -9,6 +9,8 @@ class Facultad extends Model
 {
     use HasFactory;
 
+    protected $table = 'facultades';
+
     protected $fillable = [
         'nombre'
     ];

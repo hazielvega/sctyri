@@ -14,12 +14,22 @@ const sidebarNavItems: NavItem[] = [
     },
     {
         title: 'Docentes',
-        href: '/admin/pasantias/docentes',
+        href: '/admin/docentes',
         icon: null,
     },
     {
         title: 'Estudiantes',
-        href: '/admin/pasantias/estudiantes',
+        href: '/admin/alumnos',
+        icon: null,
+    },
+    {
+        title: 'Carreas',
+        href: '/admin/carreras',
+        icon: null,
+    },
+    {
+        title: 'Facultades',
+        href: '/admin/facultades',
         icon: null,
     },
 ];

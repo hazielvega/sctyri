@@ -135,20 +135,6 @@ export function PasantiaForm({
     const [docentes, setDocentes] = useState<Docente[]>([]);
     const [loadingDocentes, setLoadingDocentes] = useState(false);
 
-    /*useEffect(() => {
-    setLoadingDocentes(true);
-    router.get('admin/docentes/list', {}, {
-        preserveState: true,
-        onSuccess: (page) => {
-            setDocentes((page.props as any).docentes ?? []);
-            setLoadingDocentes(false);
-        },
-            onError: () => {
-            setLoadingDocentes(false);
-        }
-    });
-    }, []);*/
-
     useEffect(() => {
     setLoadingDocentes(true);
     axios.get('admin/docentes/list') // Usar ruta API directa
@@ -477,6 +463,92 @@ export function PasantiaForm({
                         )}
                         <FormDescription>
                             Docente tutor de la pasantía
+                        </FormDescription>
+                        </FormItem>
+                    )}
+                />
+
+                <FormField
+                    control={form.control}
+                    name="docente_id"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Alumno</FormLabel>
+                        <FormControl>
+                            <Select
+                            value={field.value ? String(field.value) : ''}
+                            onValueChange={val => field.onChange(val ? Number(val) : undefined)}
+                            disabled={processing || loadingDocentes}
+                            >
+                            <SelectTrigger className="w-full">
+                                <SelectValue placeholder={
+                                loadingDocentes ? "Cargando alumnos..." : "Selecciona el alumno"
+                                } />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {loadingDocentes ? (
+                                <SelectItem value="loading" disabled>
+                                    Cargando alumno...
+                                </SelectItem>
+                                ) : (
+                                docentes.map((docente) => (
+                                    <SelectItem key={docente.id} value={String(docente.id)}>
+                                    {docente.nombre} {docente.apellido}
+                                    </SelectItem>
+                                ))
+                                )}
+                            </SelectContent>
+                            </Select>
+                        </FormControl>
+                        <FormMessage />
+                        {inertiaErrors.docente_id && (
+                            <p className="text-destructive text-sm">{inertiaErrors.docente_id}</p>
+                        )}
+                        <FormDescription>
+                            Alumno tutor de la pasantía
+                        </FormDescription>
+                        </FormItem>
+                    )}
+                />
+
+                <FormField
+                    control={form.control}
+                    name="docente_id"
+                    render={({ field }) => (
+                        <FormItem>
+                        <FormLabel>Convenio</FormLabel>
+                        <FormControl>
+                            <Select
+                            value={field.value ? String(field.value) : ''}
+                            onValueChange={val => field.onChange(val ? Number(val) : undefined)}
+                            disabled={processing || loadingDocentes}
+                            >
+                            <SelectTrigger className="w-full">
+                                <SelectValue placeholder={
+                                loadingDocentes ? "Cargando convenios..." : "Selecciona el convenio relacionado a la pasantía"
+                                } />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {loadingDocentes ? (
+                                <SelectItem value="loading" disabled>
+                                    Cargando convenios...
+                                </SelectItem>
+                                ) : (
+                                docentes.map((docente) => (
+                                    <SelectItem key={docente.id} value={String(docente.id)}>
+                                    {docente.nombre} {docente.apellido}
+                                    </SelectItem>
+                                ))
+                                )}
+                            </SelectContent>
+                            </Select>
+                        </FormControl>
+                        <FormMessage />
+                        {inertiaErrors.docente_id && (
+                            <p className="text-destructive text-sm">{inertiaErrors.docente_id}</p>
+                        )}
+                        <FormDescription>
+                            Convenio relacionado a la pasantía
                         </FormDescription>
                         </FormItem>
                     )}
